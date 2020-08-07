@@ -5,6 +5,7 @@ function IsNumeric(n) {
 }
 
 function spin() {
+    var promise = $("#my_audio").get(0).play();
     var numLow = $("#lownumber").val();
     var numHigh = $("#highnumber").val();
     var listName = $("#listName");
