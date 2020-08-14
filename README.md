@@ -1,2 +1,4 @@
-# xoso
-Quay ngẫu nhiên 2 người trong danh sách để chọn ra người may mắn nhất!
+# Mã nguồn quay số may mắn
+Ứng dụng cho việc chọn ngẫu nhiên 2 người trong danh sách lớp xuống lấy cơm:
+
+Link quay số: https://anhnbt-it.github.io/xoso/index.html
