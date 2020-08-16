@@ -63,6 +63,9 @@ input[type=number] {
     opacity: 1;
     display: block;
 }
+#result span a {
+    color: #fcb045;
+}
 
 .mb-2 {
     margin-bottom: 10px;
