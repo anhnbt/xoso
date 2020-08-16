@@ -1,72 +1,83 @@
-const timeDelay = 3000;
+const TIME_DELAY = 3000;
+const ROLLER_AUDIO = document.getElementById("roller");
+const JACKPOT_AUDIO = document.getElementById("jackpot");
+const XOSO_AUDIO = document.getElementById("audioXoSo");
+
+function playAudio(x) {
+  x.play();
+}
+
+function pauseAudio(x) {
+  x.pause();
+}
 
 function IsNumeric(n) {
-    return !isNaN(n);
+  return !isNaN(n);
+}
+
+function linkify(text) {
+  let urlRegex = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gi;
+  return text.replace(urlRegex, function (url) {
+    return '<a href="' + url + '">' + url + "</a>";
+  });
 }
 
 function spin() {
-    var promise = $("#my_audio").get(0).play();
-    var numLow = $("#lownumber").val();
-    var numHigh = $("#highnumber").val();
-    var listName = $("#listName");
-    var result = $("#result");
+  playAudio(XOSO_AUDIO);
+  let listName = String(document.getElementById("listName").value);
+  let result = document.getElementById("result");
 
-    if (listName.val() !== "") {
+  if (listName !== "") {
+    playAudio(ROLLER_AUDIO);
+    let lines = listName.split("\n");
+    interval = setInterval(function () {
+      let numRandOne = Math.round(Math.random() * lines.length);
+      let numRandTwo = Math.round(Math.random() * lines.length);
+      result.innerHTML = "<span>" + linkify(lines[numRandOne]) + "</span><span>" + linkify(lines[numRandTwo]) + "</span>";
+    }, 50);
+    setTimeout(function () {
+      clearInterval(interval);
+      pauseAudio(ROLLER_AUDIO);
+      playAudio(JACKPOT_AUDIO);
+    }, TIME_DELAY);
+  } else {
+    let numLow = parseFloat(document.getElementById("lownumber").value);
+    let numHigh = parseFloat(document.getElementById("highnumber").value);
+    let adjustedHigh = parseFloat(numHigh) - parseFloat(numLow) + 1;
 
-        $("#roller").get(0).play();
-        var lines = listName.val().split('\n');
-        console.log(lines.length);
-        // for (var i = 0; i < lines.length; i++) {
-        //     console.log(lines[i]);
-        // }
-        interval = setInterval(function() {
-            var numRandOne = Math.floor(Math.random() * lines.length) + parseFloat(0);
-            var numRandTwo = Math.floor(Math.random() * lines.length) + parseFloat(0);
-            result.html("<span>" + lines[numRandOne] + "/" + lines[numRandTwo] + "</span>");
-        }, 50); // every 0,5 second
-        setTimeout(function() {
-            clearInterval(interval);
-            $("#roller").get(0).pause();
-            $("#jackpot").get(0).play();
-        }, timeDelay);
+    if (IsNumeric(numLow) && IsNumeric(numHigh) && numLow <= numHigh && numLow != "" && numHigh != "") {
+      playAudio(ROLLER_AUDIO);
+      interval = setInterval(function () {
+        let numRandOne =
+          Math.floor(Math.random() * adjustedHigh) + parseFloat(0);
+        let numRandTwo =
+          Math.floor(Math.random() * adjustedHigh) + parseFloat(0);
+          result.innerHTML =  "<span>" + numRandOne + "</span><span>" + numRandTwo + "</span>";
+      }, 50);
+      setTimeout(function () {
+        clearInterval(interval);
+        pauseAudio(ROLLER_AUDIO);
+        playAudio(JACKPOT_AUDIO);
+      }, TIME_DELAY);
     } else {
-        var adjustedHigh = (parseFloat(numHigh) - parseFloat(numLow)) + 1;
+        result.innerHTML = "Vui lòng nhập lại số...";
+    }
+  }
+}
 
-        if ((IsNumeric(numLow)) && (IsNumeric(numHigh)) && (parseFloat(numLow) <= parseFloat(numHigh)) && (numLow != '') && (numHigh != '')) {
-
-            $("#roller").get(0).play();
-            interval = setInterval(function() {
-                var numRandOne = Math.floor(Math.random() * adjustedHigh) + parseFloat(0);
-                var numRandTwo = Math.floor(Math.random() * adjustedHigh) + parseFloat(0);
-                result.html("<span>" + numRandOne + "/" + numRandTwo + "</span>");
-            }, 50); // every 1 second
-            setTimeout(function() {
-                clearInterval(interval);
-                $("#roller").get(0).pause();
-                $("#jackpot").get(0).play();
-            }, timeDelay);
-        } else {
-            result.text("Chưa nhập số...");
-        }
+function isRandomChecked(e) {
+    if (e.checked === true) {
+        document.getElementById("listName").value = '';
+        document.getElementById("listName").disabled = true;
+    } else {
+        document.getElementById("listName").disabled = false;
     }
 }
 
-$(function() {
-
-    $("#listName").focus();
-
-    $('#isRandomNumber').click(function(e) {
-        $("#listName").val("");
-    });
-
-    $("#spin").click(function(e) {
-        e.preventDefault()
-        spin();
-    });
-    document.addEventListener("keydown", function(event) {
-        if (event.keyCode == '32') {
-            spin();
-        }
-        // console.log(event.which);
-    })
-});
+window.onload = function() {
+  document.addEventListener("keydown", function (event) {
+    if (event.keyCode == "32") {
+      spin();
+    }
+  });
+};

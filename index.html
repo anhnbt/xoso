@@ -12,24 +12,28 @@
     <div class="page-wrap">
         <h1>Hôm nay ai lấy cơm?</h1>
         <form action="">
-            <label for="listName">Nhập danh sách, mỗi tên trên 1 dòng</label>
-            <div>
-                <textarea name="listName" id="listName" cols="30" rows="10" placeholder="Mỗi tên trên 1 dòng"></textarea>
+            <label for="listName">Nhập danh sách</label>
+            <div class="mt-2">
+                <textarea id="listName" cols="60" rows="10" placeholder="Mỗi tên trên 1 dòng"></textarea>
             </div>
-            <input type="checkbox" name="isRandomNumber" id="isRandomNumber" value="1"> <label for="isRandomNumber">Hoặc quay 2 số ngẫu nhiên</label>
-            <div class="text-center">
-                <input type="text" id="lownumber" value="1" class="form-control" placeholder="Min" required /> và
-                <input type="text" id="highnumber" value="100" class="form-control" placeholder="Max" required />
+            <div class="mt-2">
+                <input type="checkbox" id="isRandomNumber" value="1" onclick="isRandomChecked(this);"> <label for="isRandomNumber">Hoặc quay 2 số ngẫu nhiên</label>
             </div>
-            <div id="result" class="result"><span>?/?</span></div>
-            <button id="spin" class="btn">Quay ngay!</button>
+            <div class="mt-2">
+                <input type="number" id="lownumber" value="1" class="form-control" placeholder="Min" required /> và
+                <input type="number" id="highnumber" value="100" class="form-control" placeholder="Max" required />
+            </div>
+            <div id="result" class="mt-2"><span>?</span><span>?</span></div>
+            <button class="btn" onclick="spin(); return false;">Quay ngay!</button>
         </form>
+        <p>Made with by <a href="https://www.facebook.com/anhnbtdotcom/" rel="author">Tuấn Anh</a> © 2020</p>
     </div>
-    <p class="text-center">Made with by <a href="https://www.facebook.com/anhnbtdotcom/" rel="author">Tuấn Anh</a> © 2020</p>
     <audio id="roller" src="sm-roller-loop.mp3" loop="loop"></audio>
     <audio id="jackpot" src="game-sm-jackpot-win.mp3"></audio>
-    <audio id="my_audio" src="XoSoMienBacNhacChuong.mp3" loop="loop" autoplay="true"></audio>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <audio id="audioXoSo" controls autoplay>
+        <source src="XoSoMienBacNhacChuong.mp3" type="audio/mpeg" loop="loop">
+        Your browser does not support the audio element.
+    </audio>
     <script type="text/javascript" src="xoso.js"></script>
 </body>
 
