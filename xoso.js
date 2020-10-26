@@ -32,8 +32,9 @@ function spin() {
     let lines = listName.split("\n");
     interval = setInterval(function () {
       let numRandOne = Math.round(Math.random() * lines.length);
-      let numRandTwo = Math.round(Math.random() * lines.length);
-      result.innerHTML = "<span>" + linkify(lines[numRandOne]) + "</span><span>" + linkify(lines[numRandTwo]) + "</span>";
+      // let numRandTwo = Math.round(Math.random() * lines.length);
+      // result.innerHTML = "<span>" + linkify(lines[numRandOne]) + "</span><span>" + linkify(lines[numRandTwo]) + "</span>";
+      result.innerHTML = "<span>" + linkify(lines[numRandOne]) + "</span>";
     }, 50);
     setTimeout(function () {
       clearInterval(interval);
@@ -50,9 +51,10 @@ function spin() {
       interval = setInterval(function () {
         let numRandOne =
           Math.floor(Math.random() * adjustedHigh) + parseFloat(0);
-        let numRandTwo =
-          Math.floor(Math.random() * adjustedHigh) + parseFloat(0);
-          result.innerHTML =  "<span>" + numRandOne + "</span><span>" + numRandTwo + "</span>";
+        // let numRandTwo =
+        //   Math.floor(Math.random() * adjustedHigh) + parseFloat(0);
+          // result.innerHTML =  "<span>" + numRandOne + "</span><span>" + numRandTwo + "</span>";
+          result.innerHTML =  "<span>" + numRandOne + "</span>";
       }, 50);
       setTimeout(function () {
         clearInterval(interval);
