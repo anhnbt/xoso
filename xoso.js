@@ -32,26 +32,45 @@ function spin() {
   if (listName !== "") {
     playAudio(ROLLER_AUDIO);
     let lines = listName.split("\n");
-    interval = setInterval(function () {
+    if (lines.length > 4) {
       // Lay ngau nhien 4 ten
-      numRandOne = getRandomWithOneExclusion(lines.length, 0, 0, 0);
-      numRandTwo = getRandomWithOneExclusion(lines.length, numRandOne, 0, 0);
-      numRandThree = getRandomWithOneExclusion(lines.length, numRandOne, numRandTwo, 0);
-      numRandFour = getRandomWithOneExclusion(lines.length, numRandOne, numRandTwo, numRandThree);
-      result.innerHTML = "<span>" + lines[numRandOne] + "</span><span>" + lines[numRandTwo] + "</span><span>" + lines[numRandThree] + "</span><span>" + lines[numRandFour] + "</span>";
-    }, 50);
-    setTimeout(function () {
-      clearInterval(interval);
-      pauseAudio(ROLLER_AUDIO);
-      playAudio(JACKPOT_AUDIO);
-      // Xoa ten trung
-      listName = removeEmptyLine(listName.replace(lines[numRandOne], ""));
-      listName = removeEmptyLine(listName.replace(lines[numRandTwo], ""));
-      listName = removeEmptyLine(listName.replace(lines[numRandThree], ""));
-      listName = removeEmptyLine(listName.replace(lines[numRandFour], ""));
-      // Cap nhat lai list
-      listNameDOM.value = listName;
-    }, TIME_DELAY);
+      interval = setInterval(function () {
+        numRandOne = getRandomWithOneExclusion(lines.length, 0, 0, 0);
+        numRandTwo = getRandomWithOneExclusion(lines.length, numRandOne, 0, 0);
+        numRandThree = getRandomWithOneExclusion(lines.length, numRandOne, numRandTwo, 0);
+        numRandFour = getRandomWithOneExclusion(lines.length, numRandOne, numRandTwo, numRandThree);
+        result.innerHTML = "<span>" + lines[numRandOne] + "</span><br>\n<span>" + lines[numRandTwo] + "</span><br>\n<span>" + lines[numRandThree] + "</span><br>\n<span>" + lines[numRandFour] + "</span>";
+      }, 50);
+
+      setTimeout(function () {
+        clearInterval(interval);
+        pauseAudio(ROLLER_AUDIO);
+        playAudio(JACKPOT_AUDIO);
+        // Xoa ten trung
+        listName = removeEmptyLine(listName.replace(lines[numRandOne], ""));
+        listName = removeEmptyLine(listName.replace(lines[numRandTwo], ""));
+        listName = removeEmptyLine(listName.replace(lines[numRandThree], ""));
+        listName = removeEmptyLine(listName.replace(lines[numRandFour], ""));
+        // Cap nhat lai list
+        listNameDOM.value = listName;
+      }, TIME_DELAY);
+    } else {
+      // Lay ngau nhien 1 ten
+      interval = setInterval(function () {
+        numRandOne = getRandomWithOneExclusion(lines.length, 0, 0, 0);
+        result.innerHTML = "<span>" + lines[numRandOne] + "</span>";
+      }, 50);
+
+      setTimeout(function () {
+        clearInterval(interval);
+        pauseAudio(ROLLER_AUDIO);
+        playAudio(JACKPOT_AUDIO);
+        // Xoa ten trung
+        listName = removeEmptyLine(listName.replace(lines[numRandOne], ""));
+        // Cap nhat lai list
+        listNameDOM.value = listName;
+      }, TIME_DELAY);
+    }
   } else {
     let numLow = parseFloat(document.getElementById("lownumber").value);
     let numHigh = parseFloat(document.getElementById("highnumber").value);
