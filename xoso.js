@@ -32,9 +32,11 @@ function spin() {
     let lines = listName.split("\n");
     interval = setInterval(function () {
       let numRandOne = Math.round(Math.random() * lines.length);
-      // let numRandTwo = Math.round(Math.random() * lines.length);
-      // result.innerHTML = "<span>" + linkify(lines[numRandOne]) + "</span><span>" + linkify(lines[numRandTwo]) + "</span>";
-      result.innerHTML = "<span>" + linkify(lines[numRandOne]) + "</span>";
+      let numRandTwo = Math.round(Math.random() * lines.length);
+      let numRandThree = Math.round(Math.random() * lines.length);
+      let numRandFour = Math.round(Math.random() * lines.length);
+      result.innerHTML = "<span>" + linkify(lines[numRandOne]) + "</span><span>" + linkify(lines[numRandTwo]) + "</span><span>" + linkify(lines[numRandThree]) + "</span><span>" + linkify(lines[numRandFour]) + "</span>";
+      // result.innerHTML = "<span>" + linkify(lines[numRandOne]) + "</span>";
     }, 50);
     setTimeout(function () {
       clearInterval(interval);
