@@ -24,24 +24,33 @@ function linkify(text) {
 
 function spin() {
   playAudio(XOSO_AUDIO);
-  let listName = String(document.getElementById("listName").value);
+  let listNameDOM = document.getElementById("listName");
+  let listName = removeEmptyLine(String(listNameDOM.value));
+  listNameDOM.value = listName;
   let result = document.getElementById("result");
-
+  let numRandOne = numRandTwo = numRandThree = numRandFour = "";
   if (listName !== "") {
     playAudio(ROLLER_AUDIO);
     let lines = listName.split("\n");
     interval = setInterval(function () {
-      let numRandOne = Math.round(Math.random() * lines.length);
-      let numRandTwo = Math.round(Math.random() * lines.length);
-      let numRandThree = Math.round(Math.random() * lines.length);
-      let numRandFour = Math.round(Math.random() * lines.length);
-      result.innerHTML = "<span>" + linkify(lines[numRandOne]) + "</span><span>" + linkify(lines[numRandTwo]) + "</span><span>" + linkify(lines[numRandThree]) + "</span><span>" + linkify(lines[numRandFour]) + "</span>";
-      // result.innerHTML = "<span>" + linkify(lines[numRandOne]) + "</span>";
+      // Lay ngau nhien 4 ten
+      numRandOne = getRandomWithOneExclusion(lines.length, 0, 0, 0);
+      numRandTwo = getRandomWithOneExclusion(lines.length, numRandOne, 0, 0);
+      numRandThree = getRandomWithOneExclusion(lines.length, numRandOne, numRandTwo, 0);
+      numRandFour = getRandomWithOneExclusion(lines.length, numRandOne, numRandTwo, numRandThree);
+      result.innerHTML = "<span>" + lines[numRandOne] + "</span><span>" + lines[numRandTwo] + "</span><span>" + lines[numRandThree] + "</span><span>" + lines[numRandFour] + "</span>";
     }, 50);
     setTimeout(function () {
       clearInterval(interval);
       pauseAudio(ROLLER_AUDIO);
       playAudio(JACKPOT_AUDIO);
+      // Xoa ten trung
+      listName = removeEmptyLine(listName.replace(lines[numRandOne], ""));
+      listName = removeEmptyLine(listName.replace(lines[numRandTwo], ""));
+      listName = removeEmptyLine(listName.replace(lines[numRandThree], ""));
+      listName = removeEmptyLine(listName.replace(lines[numRandFour], ""));
+      // Cap nhat lai list
+      listNameDOM.value = listName;
     }, TIME_DELAY);
   } else {
     let numLow = parseFloat(document.getElementById("lownumber").value);
@@ -53,10 +62,7 @@ function spin() {
       interval = setInterval(function () {
         let numRandOne =
           Math.floor(Math.random() * adjustedHigh) + parseFloat(0);
-        // let numRandTwo =
-        //   Math.floor(Math.random() * adjustedHigh) + parseFloat(0);
-          // result.innerHTML =  "<span>" + numRandOne + "</span><span>" + numRandTwo + "</span>";
-          result.innerHTML =  "<span>" + numRandOne + "</span>";
+        result.innerHTML = "<span>" + numRandOne + "</span>";
       }, 50);
       setTimeout(function () {
         clearInterval(interval);
@@ -64,21 +70,36 @@ function spin() {
         playAudio(JACKPOT_AUDIO);
       }, TIME_DELAY);
     } else {
-        result.innerHTML = "Vui lòng nhập lại số...";
+      result.innerHTML = "Vui lòng nhập lại số...";
     }
   }
 }
 
-function isRandomChecked(e) {
-    if (e.checked === true) {
-        document.getElementById("listName").value = '';
-        document.getElementById("listName").disabled = true;
-    } else {
-        document.getElementById("listName").disabled = false;
+function getRandomWithOneExclusion(lengthOfArray, indexToExcludeOne, indexToExcludeTwo, indexToExcludeThree){
+
+  var rand = null;  //an integer
+
+    while(rand === null || rand === indexToExcludeOne || rand == indexToExcludeTwo || rand == indexToExcludeThree){
+      rand = Math.round(Math.random() * (lengthOfArray - 1));
     }
+
+  return rand;
 }
 
-window.onload = function() {
+function removeEmptyLine(text) {
+  return text.replace(/(\r?\n)\s*\1+/g, '$1').trim();
+}
+
+function isRandomChecked(e) {
+  if (e.checked === true) {
+    document.getElementById("listName").value = '';
+    document.getElementById("listName").disabled = true;
+  } else {
+    document.getElementById("listName").disabled = false;
+  }
+}
+
+window.onload = function () {
   document.addEventListener("keydown", function (event) {
     if (event.keyCode == "32") {
       spin();
